@@ -62,7 +62,7 @@ def contrast_evaluation(text_embeds, code_embeds, img2txt):
         relevance_scores = np.zeros_like(score)
         relevance_scores[img2txt[index]] = 1
 
-        ndcg = calculate_ndcg(relevance_scores[inds], k=10)
+        ndcg = calculate_ndcg(relevance_scores[inds], k=k)
         ndcgs.append(ndcg)
 
     tr1 = 100.0 * len(np.where(ranks < 1)[0]) / len(ranks)

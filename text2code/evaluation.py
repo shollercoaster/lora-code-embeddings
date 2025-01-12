@@ -56,32 +56,35 @@ def contrast_evaluation(text_embeds, code_embeds, img2txt):
 
 
     ranks = np.ones(scores_i2t.shape[0]) * -1
-    ndcg_scores = []
+    ndcgs = []
+    k = 10
 
     for index, score in enumerate(scores_i2t):
         inds = np.argsort(score)[::-1]
         ranks[index] = np.where(inds == img2txt[index])[0][0]
 
-        # relevance_scores = [1 if i == ground_truth_indices[index] else 0 for i in inds]
-        # ndcg = calculate_ndcg(relevance_scores, k)
-        # ndcg_scores.append(ndcg)
+        relevance_scores = np.zeros_like(score)
+        relevance_scores[img2txt[index]] = 1
+
+        ndcg = calculate_ndcg(relevance_scores[inds], k=k)
+        ndcgs.append(ndcg)
 
     tr1 = 100.0 * len(np.where(ranks < 1)[0]) / len(ranks)
     tr5 = 100.0 * len(np.where(ranks < 5)[0]) / len(ranks)
     tr10 = 100.0 * len(np.where(ranks < 10)[0]) / len(ranks)
     mrr = 100.0 * np.mean(1 / (ranks + 1))
-    avg_ndcg = 100.0 * np.mean(ndcg_scores)
+    avg_ndcg = 100.0 * np.mean(ndcgs)
 
     eval_result = {'r1': f"{tr1:.2f}",
                    'r5': f"{tr5:.2f}",
                    'r10': f"{tr10:.2f}",
                    'mrr': f"{mrr:.2f}"}
-                   # 'ndcg@10': f'{avg_ndcg:.2f}'}
+                   'ndcg@10': f'{avg_ndcg:.2f}'}
     return eval_result
 
 def get_model_and_dataset(model_name, language, peft_eval=False):
     print("\nCreating retrieval dataset")
-    _, _, test_dataset, code_dataset = create_dataset('../data', 'cosqa')
+    _, _, test_dataset, code_dataset = create_dataset('../data/CSN', language)
 
     test_loader, code_loader = create_loader([test_dataset, code_dataset], [None, None],
                                                 batch_size=[256, 256],
@@ -94,11 +97,9 @@ def get_model_and_dataset(model_name, language, peft_eval=False):
         peft_model = PeftModel.from_pretrained(model, "schaturv/text2code-cosqa-notasktype-r64", adapter_name="text2code")
         peft_model.eval()  # Set to evaluation mode
         peft_model.set_adapter("text2code")
-
-        # print(peft_model)
-
         print("Active adapters: ", peft_model.active_adapters)
         return peft_model, tokenizer, test_loader, code_loader
+
     return model, tokenizer, test_loader, code_loader
 
 def evaluation_script(model, tokenizer, test_loader, code_loader):
@@ -114,7 +115,7 @@ def evaluation_script(model, tokenizer, test_loader, code_loader):
     print(f'\n====> zero-shot test result: ', test_result)
     return test_result
 
-file = open('../results/text2code_cosqa_results.txt', "a")
+file = open('../results/text2code_ndcg_results.txt', "a")
 
 for model_name in ['microsoft/unixcoder-base', 'microsoft/graphcodebert-base']:
     file.write(f"{model_name} results: ----------\n")
