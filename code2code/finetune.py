@@ -34,7 +34,7 @@ def get_model(model_name):
 
 
 languages = ["C", "PHP", "Java", "C++", "C#", "Javascript", "Python"]
-root_path = "../XLCoST_data"
+root_path = "../data/XLCoST_data"
 
 dataset = get_dataset(root_path=root_path, languages=languages)
 
