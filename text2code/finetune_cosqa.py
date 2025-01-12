@@ -24,7 +24,7 @@ def get_model(model_name):
         lora_alpha=128,
         target_modules=['query', 'value'],
         lora_dropout=0.1,
-        task_type="QUESTION_ANS"
+        # task_type="QUESTION_ANS"
     )
 
     for param in model.parameters():
@@ -36,8 +36,8 @@ def get_model(model_name):
     # model.gradient_checkpointing_enable()  # reduce number of stored activations
     # model.enable_input_require_grads()
 
-    model.add_adapter(lora_config, adapter_name="text2code-cosqa-r64")
-    model.set_adapter("text2code-cosqa-r64")
+    model.add_adapter(lora_config, adapter_name="text2code-cosqa-notasktype-r64")
+    model.set_adapter("text2code-cosqa-notasktype-r64")
     return model, tokenizer
 
 def print_trainable_parameters(model):
@@ -83,4 +83,4 @@ for model_name in ['microsoft/codebert-base', 'microsoft/graphcodebert-base', 'm
     # print_trainable_parameters(model)
     run(model, tokenizer)
     print(f"\n\n Training completed with {model_name}. \n\n")
-    model.push_to_hub("text2code-cosqa-r64")
+    model.push_to_hub("text2code-cosqa-notasktype-r64")
