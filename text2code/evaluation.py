@@ -22,15 +22,33 @@ def get_feats(model, tokenizer, data_loader, max_length, device, desc='Get feats
                 in_mask.sum(1), min=1e-6
         )
         embeds.append(pooled_embeds)
-    print("before cat operation: ", type(embeds), type(embeds[0]), embeds[0].shape)
+    # print("before cat operation: ", type(embeds), type(embeds[0]), embeds[0].shape)
     embeds = torch.cat(embeds, dim=0)
-    print("after cat operation: ", type(embeds), type(embeds[0]), embeds[0].shape)
+    # print("after cat operation: ", type(embeds), type(embeds[0]), embeds[0].shape)
     return embeds
+
+
+def calculate_dcg(relevance_scores, k):
+    """
+    Calculate the Discounted Cumulative Gain (DCG) for a ranked list of relevance scores.
+    """
+    relevance_scores = np.array(relevance_scores[:k])
+    dcg = np.sum(relevance_scores / np.log2(np.arange(2, relevance_scores.size + 2)))
+    return dcg
+
+def calculate_ndcg(relevance_scores, k):
+    """
+    Calculate the Normalized Discounted Cumulative Gain (NDCG) for a ranked list.
+    """
+    dcg = calculate_dcg(relevance_scores, k)
+    ideal_relevance = sorted(relevance_scores, reverse=True)
+    idcg = calculate_dcg(ideal_relevance, k)
+    return dcg / idcg if idcg > 0 else 0.0
 
 
 @torch.no_grad()
 def contrast_evaluation(text_embeds, code_embeds, img2txt):
-    print(text_embeds.shape, text_embeds.t().shape, code_embeds.shape, code_embeds.t().shape)
+    # print(text_embeds.shape, text_embeds.t().shape, code_embeds.shape, code_embeds.t().shape)
     text_embeds = torch.nn.functional.normalize(text_embeds, dim=1)  # Shape: [num_queries, embedding_dim]
     code_embeds = torch.nn.functional.normalize(code_embeds, dim=1)
     score_matrix_i2t = text_embeds @ code_embeds.t() # torch.nn.functional.cosine_similarity(text_embeds.t(), code_embeds.t())
@@ -38,24 +56,32 @@ def contrast_evaluation(text_embeds, code_embeds, img2txt):
 
 
     ranks = np.ones(scores_i2t.shape[0]) * -1
+    ndcg_scores = []
+
     for index, score in enumerate(scores_i2t):
         inds = np.argsort(score)[::-1]
         ranks[index] = np.where(inds == img2txt[index])[0][0]
+
+        relevance_scores = [1 if i == ground_truth_indices[index] else 0 for i in inds]
+        ndcg = calculate_ndcg(relevance_scores, k)
+        ndcg_scores.append(ndcg)
 
     tr1 = 100.0 * len(np.where(ranks < 1)[0]) / len(ranks)
     tr5 = 100.0 * len(np.where(ranks < 5)[0]) / len(ranks)
     tr10 = 100.0 * len(np.where(ranks < 10)[0]) / len(ranks)
     mrr = 100.0 * np.mean(1 / (ranks + 1))
+    avg_ndcg = 100.0 * np.mean(ndcg_scores)
 
     eval_result = {'r1': f"{tr1:.2f}",
                    'r5': f"{tr5:.2f}",
                    'r10': f"{tr10:.2f}",
-                   'mrr': f"{mrr:.2f}"}
+                   'mrr': f"{mrr:.2f}",
+                   'ndcg@10': f'{avg_ndcg:.2f}'}
     return eval_result
 
 def get_model_and_dataset(model_name, language, peft_eval=False):
     print("\nCreating retrieval dataset")
-    _, _, test_dataset, code_dataset = create_dataset('../dataset/CSN', language)
+    _, _, test_dataset, code_dataset = create_dataset('../data/CSN', language)
 
     test_loader, code_loader = create_loader([test_dataset, code_dataset], [None, None],
                                                 batch_size=[256, 256],
@@ -69,7 +95,7 @@ def get_model_and_dataset(model_name, language, peft_eval=False):
         peft_model.eval()  # Set to evaluation mode
         peft_model.set_adapter("text2code")
 
-        print(peft_model)
+        # print(peft_model)
 
         print("Active adapters: ", peft_model.active_adapters)
         return peft_model, tokenizer, test_loader, code_loader
@@ -90,7 +116,7 @@ def evaluation_script(model, tokenizer, test_loader, code_loader):
 
 file = open('../results/text2code_combined_results.txt', "a")
 
-for model_name in ["microsoft/unixcoder-base"]: #'microsoft/unixcoder-base', 'microsoft/graphcodebert-base', 'microsoft/codebert-base']:
+for model_name in ['microsoft/unixcoder-base', 'microsoft/graphcodebert-base', 'microsoft/codebert-base']:
     file.write(f"{model_name} results: ----------\n")
     file.write("-----------------\n")
     for language in ['ruby', 'go', 'php', 'python', 'java', 'javascript']:
