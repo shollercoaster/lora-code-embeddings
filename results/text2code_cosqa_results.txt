@@ -1,0 +1,11 @@
+microsoft/unixcoder-base results: ----------
+-----------------
+ruby results: 
+microsoft/unixcoder-base results: ----------
+-----------------
+ruby results: 
+microsoft/unixcoder-base results: ----------
+-----------------
+ruby results: 
+Base Model Results ------------
+zero-shot test result: {'r1': '20.60', 'r5': '43.40', 'r10': '53.20', 'mrr': '31.36'}
