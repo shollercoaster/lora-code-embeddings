@@ -91,7 +91,7 @@ def get_model_and_dataset(model_name, language, peft_eval=False):
     model = RobertaModel.from_pretrained(model_name, trust_remote_code=True)
     
     if peft_eval:
-        peft_model = PeftModel.from_pretrained(model, "schaturv/text2code-cosqa-r64", adapter_name="text2code")
+        peft_model = PeftModel.from_pretrained(model, "schaturv/text2code-cosqa-notasktype-r64", adapter_name="text2code")
         peft_model.eval()  # Set to evaluation mode
         peft_model.set_adapter("text2code")
 

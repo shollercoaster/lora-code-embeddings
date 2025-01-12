@@ -43,8 +43,8 @@ def get_model(model_name):
     # model.gradient_checkpointing_enable()  # reduce number of stored activations
     # model.enable_input_require_grads()
 
-    model.add_adapter(lora_config, adapter_name="text2code-freezed-r64")
-    model.set_adapter("text2code-freezed-r64")
+    model.add_adapter(lora_config, adapter_name="text2code-duo-freezed-r64")
+    model.set_adapter("text2code-duo-freezed-r64")
     return model, tokenizer
 
 def print_trainable_parameters(model):
@@ -89,9 +89,9 @@ for model_name in ['microsoft/codebert-base', 'microsoft/graphcodebert-base', 'm
     print_trainable_parameters(model)
 '''
 
-for model_name in ['microsoft/codebert-base', 'microsoft/graphcodebert-base', 'microsoft/unixcoder-base']:
+for model_name in ['microsoft/graphcodebert-base', 'microsoft/unixcoder-base']:
     model, tokenizer = get_model(model_name)
     # print_trainable_parameters(model)
     run(model, tokenizer)
     print(f"\n\n Training completed with {model_name}. \n\n")
-    model.push_to_hub("text2code-freezed-r64")
+    model.push_to_hub("text2code-duo-freezed-r64")
