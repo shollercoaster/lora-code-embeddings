@@ -9,3 +9,30 @@ microsoft/unixcoder-base results: ----------
 ruby results: 
 Base Model Results ------------
 zero-shot test result: {'r1': '20.60', 'r5': '43.40', 'r10': '53.20', 'mrr': '31.36'}
+microsoft/unixcoder-base results: ----------
+-----------------
+ruby results: 
+Base Model Results ------------
+zero-shot test result: {'r1': '20.60', 'r5': '43.40', 'r10': '53.20', 'mrr': '31.36'}
+microsoft/unixcoder-base results: ----------
+-----------------
+ruby results: 
+Base Model Results ------------
+zero-shot test result: {'r1': '20.60', 'r5': '43.40', 'r10': '53.20', 'mrr': '31.36'}
+microsoft/unixcoder-base results: ----------
+-----------------
+ruby results: 
+Base Model Results ------------
+zero-shot test result: {'r1': '20.60', 'r5': '43.40', 'r10': '53.20', 'mrr': '31.36'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '24.80', 'r5': '47.80', 'r10': '58.80', 'mrr': '36.02'}
+--------------
+go results: 
+Base Model Results ------------
+zero-shot test result: {'r1': '20.60', 'r5': '43.40', 'r10': '53.20', 'mrr': '31.36'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '24.80', 'r5': '47.80', 'r10': '58.80', 'mrr': '36.02'}
+--------------
+php results: 
+Base Model Results ------------
+zero-shot test result: {'r1': '20.60', 'r5': '43.40', 'r10': '53.20', 'mrr': '31.36'}

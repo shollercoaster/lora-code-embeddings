@@ -1,0 +1,21 @@
+ruby results: ----------
+-----------------
+Base Model Results ------------
+zero-shot test result: {'r1': '34.26', 'r5': '55.51', 'r10': '62.57', 'mrr': '44.06', 'ndcg@10': '47.95'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '34.34', 'r5': '57.89', 'r10': '66.38', 'mrr': '45.42', 'ndcg@10': '49.77'}
+--------------
+go results: ----------
+-----------------
+Base Model Results ------------
+zero-shot test result: {'r1': '39.07', 'r5': '61.48', 'r10': '68.97', 'mrr': '49.59', 'ndcg@10': '53.66'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '76.42', 'r5': '90.85', 'r10': '93.65', 'mrr': '82.88', 'ndcg@10': '85.35'}
+--------------
+python results: ----------
+-----------------
+Base Model Results ------------
+zero-shot test result: {'r1': '21.62', 'r5': '38.28', 'r10': '45.76', 'mrr': '29.76', 'ndcg@10': '32.83'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '45.55', 'r5': '67.12', 'r10': '74.19', 'mrr': '55.56', 'ndcg@10': '59.49'}
+--------------

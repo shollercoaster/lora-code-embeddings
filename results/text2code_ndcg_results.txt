@@ -1,0 +1,25 @@
+microsoft/unixcoder-base results: ----------
+-----------------
+Base Model Results ------------
+zero-shot test result: {'r1': '20.60', 'r5': '43.40', 'r10': '53.20', 'mrr': '31.36', 'ndcg@10': '35.64'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '24.80', 'r5': '47.80', 'r10': '58.80', 'mrr': '36.02', 'ndcg@10': '40.44'}
+--------------
+microsoft/graphcodebert-base results: ----------
+-----------------
+Base Model Results ------------
+zero-shot test result: {'r1': '5.60', 'r5': '13.80', 'r10': '19.40', 'mrr': '10.06', 'ndcg@10': '11.51'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '5.60', 'r5': '13.80', 'r10': '20.00', 'mrr': '10.15', 'ndcg@10': '11.72'}
+--------------
+microsoft/unixcoder-base results: ----------
+-----------------
+ruby results: 
+Base Model Results ------------
+zero-shot test result: {'r1': '34.26', 'r5': '55.51', 'r10': '62.57', 'mrr': '44.06', 'ndcg@10': '47.95'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '29.34', 'r5': '53.53', 'r10': '62.65', 'mrr': '40.78', 'ndcg@10': '45.29'}
+--------------
+go results: 
+Base Model Results ------------
+zero-shot test result: {'r1': '39.07', 'r5': '61.48', 'r10': '68.97', 'mrr': '49.59', 'ndcg@10': '53.66'}
