@@ -33,3 +33,10 @@ zero-shot test result: {'r1': '24.04', 'r5': '40.35', 'r10': '47.52', 'mrr': '32
 PEFT Model Results ------------
 zero-shot test result: {'r1': '29.11', 'r5': '49.56', 'r10': '56.82', 'mrr': '38.75', 'ndcg@10': '42.35'}
 --------------
+java results: ----------
+-----------------
+Base Model Results ------------
+zero-shot test result: {'r1': '25.35', 'r5': '44.27', 'r10': '51.80', 'mrr': '34.47', 'ndcg@10': '37.94'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '43.65', 'r5': '65.04', 'r10': '72.18', 'mrr': '53.47', 'ndcg@10': '57.45'}
+--------------
