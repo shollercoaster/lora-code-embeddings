@@ -19,3 +19,17 @@ zero-shot test result: {'r1': '21.62', 'r5': '38.28', 'r10': '45.76', 'mrr': '29
 PEFT Model Results ------------
 zero-shot test result: {'r1': '45.55', 'r5': '67.12', 'r10': '74.19', 'mrr': '55.56', 'ndcg@10': '59.49'}
 --------------
+php results: ----------
+-----------------
+Base Model Results ------------
+zero-shot test result: {'r1': '15.56', 'r5': '29.06', 'r10': '35.71', 'mrr': '22.31', 'ndcg@10': '24.73'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '42.12', 'r5': '64.39', 'r10': '71.92', 'mrr': '52.46', 'ndcg@10': '56.54'}
+--------------
+javascript results: ----------
+-----------------
+Base Model Results ------------
+zero-shot test result: {'r1': '24.04', 'r5': '40.35', 'r10': '47.52', 'mrr': '32.05', 'ndcg@10': '35.04'}
+PEFT Model Results ------------
+zero-shot test result: {'r1': '29.11', 'r5': '49.56', 'r10': '56.82', 'mrr': '38.75', 'ndcg@10': '42.35'}
+--------------
